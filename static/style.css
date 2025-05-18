@@ -1,0 +1,246 @@
+:root {
+    --background-color: #000;
+    --text-color: #fff;
+    --input-bg: #333;
+    --input-border: #444;
+    --input-placeholder: #aaa;
+    --button-bg: #444;
+    --button-hover-bg: #666;
+    --link-color: #08f;
+    --success-color: #00ff00;
+    --error-color: #ff0000;
+    --sidebar-bg: #1e1e1e;
+    --sidebar-exit-bg: #5a5a5a;
+    --sidebar-exit-color: #f36a6a;
+    --play-btn-bg: #8bb26c;
+    --play-btn-color: #fff;
+    --points-color: #7ed957;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+label {
+    text-align: left;
+    display: block;
+    margin: 5px 0;
+    font-size: 0.9rem;
+}
+
+input {
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid var(--input-border);
+    border-radius: 5px;
+    background: var(--input-bg);
+    color: var(--text-color);
+    width: 200px;
+}
+
+input::placeholder {
+    color: var(--input-placeholder);
+}
+
+button {
+    margin: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--button-bg);
+    color: var(--text-color);
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: var(--button-hover-bg);
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+    margin: 10px;
+    padding: 10px 20px;
+    background-color: var(--button-bg);
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    display: inline-block;
+}
+
+a:hover {
+    background-color: var(--button-hover-bg);
+    text-decoration: underline;
+}
+
+.flash-success {
+    color: var(--success-color);
+    font-weight: bold;
+}
+
+.flash-error {
+    color: var(--error-color);
+    font-weight: bold;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    text-align: left;
+}
+
+/* Lobby/Game Styles */
+.game-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.game-screen {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.play-button {
+    background-color: var(--play-btn-bg);
+    color: var(--play-btn-color);
+    font-size: 40px;
+    padding: 40px 80px;
+    border: 1px solid black;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.controls a {
+    padding: 10px 30px;
+    border: 1px solid black;
+    text-align: center;
+    font-weight: bold;
+    min-width: 150px;
+    background-color: #1d1d1d;
+    color: var(--play-btn-bg);
+}
+
+.controls a:last-child {
+    background-color: #fff;
+    color: #000;
+}
+
+.points {
+    align-self: flex-start;
+    margin-top: auto;
+    margin-left: 40px;
+    font-size: 18px;
+}
+
+.points span:last-child {
+    color: var(--points-color);
+    font-weight: bold;
+}
+
+.sidebar {
+    width: 300px;
+    background-color: var(--sidebar-bg);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar input {
+    padding: 10px;
+    margin-bottom: 30px;
+    width: 100%;
+}
+
+.user-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: auto;
+}
+
+.user-list li {
+    margin-bottom: 15px;
+    position: relative;
+    padding-left: 22px;
+}
+
+.user-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.user-list li:last-child {
+    color: var(--points-color);
+}
+
+.user-list li:last-child::before {
+    background-color: var(--points-color);
+}
+
+.sidebar a {
+    border: 1px solid var(--link-color);
+    border-radius: 4px;
+    color: var(--link-color);
+    font-weight: bold;
+}
+
+.sidebar a.exit {
+    background-color: var(--sidebar-exit-bg);
+    color: var(--sidebar-exit-color);
+    border: none;
+}
