@@ -1,0 +1,54 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Jogador {
+  - apelido : String
+  - email : String
+  - senha : String
+  + boolean setApelido(apelido : String)
+  + String getApelido()
+  + boolean setEmail(email : String)
+  + String getEmail()
+  + boolean setSenha(senha : String)
+  + String getSenha()
+  + boolean recuperarSenha(email : String)
+}
+
+class Partida {
+  - id : int
+  - dataHora : Date
+  - status : String
+  + boolean iniciarPartida()
+  + boolean finalizarPartida()
+}
+
+class Movimento {
+  - id : int
+  - descricao : String
+  + boolean registrarMovimento(idPartida: int, descricao: String)
+}
+
+class Ranking {
+  - jogador : Jogador
+  - win : int
+  - lose : int
+  + boolean atualizarRanking(jogador : Jogador)
+  + List<Jogador> visualizarRanking()
+}
+
+class Perfil {
+  - jogador : Jogador
+  + boolean configurarPerfil()
+}
+
+class SugestaoJogada {
+  - jogador : Jogador
+  + String sugerirJogada()
+}
+
+Jogador "0..*" -- "0..*" Partida
+Partida "1" -- "0..*" Movimento
+Perfil "1" -- "1" Jogador
+SugestaoJogada "1" -- "1" Jogador
+
+@enduml

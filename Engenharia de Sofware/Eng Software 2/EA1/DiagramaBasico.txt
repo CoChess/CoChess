@@ -1,0 +1,72 @@
+@startuml
+class Usuario {
+    +id: int
+    +nome: String
+    +email: String
+    +senha: String
+    +cadastrar()
+    +autenticar()
+    +recuperarSenha()
+    +editarPerfil(nome: String, email: String, senha: String)
+}
+
+class Jogador {
+    +ranking: int
+    +time: String
+    +visualizarRanking()
+}
+
+class Partida {
+    +id: int
+    +jogadores: Jogador[4]
+    +tabuleiro: Tabuleiro
+    +status: String
+    +historicoMovimentos: Movimento[]
+    +iniciarPartida()
+    +finalizarPartida()
+    +registrarMovimento()
+    +verHistoricoPartida()
+}
+
+class Movimento {
+    +id: int
+    +peca: String
+    +posicaoInicial: String
+    +posicaoFinal: String
+    +valido: boolean
+    +validarMovimento()
+    +executarMovimento()
+}
+
+class SugestaoJogada {
+    +id: int
+    +jogador: Jogador
+    +movimentoSugerido: Movimento
+    +gerarSugestao()
+    +aceitarSugestao()
+}
+
+class Ranking {
+    +id: int
+    +jogador: Jogador
+    +pontuacao: int
+    +vitorias: int
+    +derrotas: int
+    +atualizarRanking()
+    +visualizarRanking()
+}
+
+class Administrador {
+    +gerenciarSistema()
+    +corrigirErros()
+}
+
+Usuario <|-- Jogador
+Usuario <|-- Administrador
+
+Partida "1" --> "4" Jogador : Participa
+Partida "1" --> "*" Movimento : Registra jogadas
+Jogador "1" --> "1" Ranking : Está associado
+Jogador "1" --> "*" SugestaoJogada : Pode sugerir jogadas
+Movimento "1" --> "1" SugestaoJogada : Ligado às sugestões
+@enduml

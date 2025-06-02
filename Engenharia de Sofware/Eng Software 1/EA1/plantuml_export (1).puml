@@ -1,0 +1,44 @@
+@startuml
+
+actor "Player" as P
+actor "Master" as M
+
+usecase "Cadastro de Usuário" as CU
+usecase "Log in" as LI
+usecase "Recuperação de Senha" as RS
+usecase "Início de Partida" as IP
+usecase "Movimentação de Peças" as MP
+usecase "Sugestão de Jogadas" as SJ
+usecase "Visualização de Ranking" as VR
+usecase "Configuração de Perfil" as CP
+usecase "View pontuação" as VP
+usecase "View wins e losses" as VWL
+usecase "Pareamento com outros players" as POP
+usecase "Jogar Partida" as JP
+usecase "Atualizações de bugs ou eventos" as UB
+usecase "Backup e Recuperação" as BR
+
+P --> CU
+P --> LI
+P --> RS
+P --> IP
+P --> MP
+P --> SJ
+P --> VR
+P --> CP
+P --> VP
+P --> JP
+P --> UB
+
+VP <|-- VWL : <<include>>
+VP <|-- POP : <<extend>>
+
+JP <|-- POP : <<include>>
+IP <|-- POP : <<include>>
+
+M --> LI
+M --> UB
+M --> BR
+
+@enduml
+
