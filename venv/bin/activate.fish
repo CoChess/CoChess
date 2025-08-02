@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV /home/lord_werther/PycharmProjects/CoChess/venv
+set -gx VIRTUAL_ENV '/home/lord_werther/PycharmProjects/CoChess(vag edit)/venv'
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH

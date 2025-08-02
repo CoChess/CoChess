@@ -1,4 +1,6 @@
-#!/home/lord_werther/PycharmProjects/CoChess/venv/bin/python3
+#!/bin/sh
+'''exec' "/home/lord_werther/PycharmProjects/CoChess(vag edit)/venv/bin/python3" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys
