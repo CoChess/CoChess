@@ -1,6 +1,6 @@
 # CoChess
 
-Projeto de Engenharia de Software: Jogo de Xadrez desenvolvido em Python.
+Projeto de Engenharia de Software: Jogo de Xadrez Web desenvolvido em Python.
 
 ## Como executar
 
@@ -16,12 +16,10 @@ chmod +x setup.sh
 
 ```bash
 ./setup.sh
-````
+```
 
-3. Colaboradores:
+## Colaboradores
 
-```bash
-Matheus Vidal Pereira - https://github.com/Koriatv
-João Caio Oliveira Lins - https://github.com/Junkicch
-João Henrique Rodrigues Lopes - https://github.com/L0rdWerther
-````
+* Matheus Vidal Pereira - [https://github.com/Koriatv](https://github.com/Koriatv)
+* João Caio Oliveira Lins - [https://github.com/Junkicch](https://github.com/Junkicch)
+* João Henrique Rodrigues Lopes - [https://github.com/L0rdWerther](https://github.com/L0rdWerther)
