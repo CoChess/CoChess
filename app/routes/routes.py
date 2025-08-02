@@ -9,4 +9,5 @@ def configure_routes(app):
     app.add_url_rule('/lobby', view_func=user_controller.lobby)
     app.add_url_rule('/lobby/train', view_func=user_controller.train)
     app.add_url_rule('/lobby/history', view_func=user_controller.history)
-    app.add_url_rule('/lobby/game', view_func=user_controller.game)
+    app.add_url_rule('/lobby/game', view_func=user_controller.game, methods=['GET', 'POST'])
+    app.add_url_rule('/game/move', view_func=user_controller.move, methods=['GET', 'POST'])
