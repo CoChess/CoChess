@@ -1,7 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash, current_app, jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
-from app.models.user_model import get_user_by_email, update_user_password, update_user_nickname
-from app.models.game_model import create_game, save_move
+from app.models.user_model import get_user_by_email, update_user_password, update_user_nickname, create_game, save_move
 from app.utils.validators import validate_input_match
 
 def change_password():
@@ -66,7 +65,7 @@ def history():
 
 def game():
     email = request.args.get('email')
-    game_id = create_game(email)
+    game_id = create_game("tt", "jh", "jc", "mv", "")
     return render_template('game.html', game_id=game_id)
 
 def move():

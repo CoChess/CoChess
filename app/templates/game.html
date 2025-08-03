@@ -2,10 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>game</title>
+    <title>Jogo de Xadrez - {{ game_id }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+
+<h1>Jogo em andamento</h1>
+<p>ID da partida: {{ game_id }}</p>
+
+<div id="chessboard"></div>
+
+<script>
+    const gameId = "{{ game_id }}";
+</script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 
 </body>
 </html>

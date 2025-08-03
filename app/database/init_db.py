@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS games (
     white_player2 TEXT NOT NULL,
     black_player1 TEXT NOT NULL,
     black_player2 TEXT NOT NULL,
-    result TEXT NOT NULL
+    result TEXT
 )
 ''')
 
