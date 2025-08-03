@@ -1,6 +1,7 @@
-from flask import render_template, request, redirect, url_for, flash, current_app
+from flask import render_template, request, redirect, url_for, flash, current_app, jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
 from app.models.user_model import get_user_by_email, update_user_password, update_user_nickname
+from app.models.game_model import create_game, save_move
 from app.utils.validators import validate_input_match
 
 def change_password():
@@ -64,5 +65,55 @@ def history():
     return render_template('history.html')
 
 def game():
-    return render_template('game.html')
+    email = request.args.get('email')
+    game_id = create_game(email)
+    return render_template('game.html', game_id=game_id)
+
+def move():
+    if request.method == 'POST':
+        data = request.get_json()
+        game_id = data.get('game_id')
+        from_pos = data.get('from')  # Exemplo: [linha, coluna]
+        to_pos = data.get('to')
+        piece = data.get('piece')
+
+        is_valid = False
+        # Exemplo simples de validação para peão
+        if piece == "pawn":
+            # Movimento normal: 1 ou 2 casas na mesma coluna
+            if from_pos[1] == to_pos[1] and abs(from_pos[0] - to_pos[0]) in [1, 2]:
+                is_valid = True
+            # Captura: 1 casa na diagonal
+            elif abs(from_pos[0] - to_pos[0]) == 1 and abs(from_pos[1] - to_pos[1]) == 1:
+                is_valid = True
+        elif piece == "rook":
+            if from_pos[0] == to_pos[0] or from_pos[1] == to_pos[1]:
+                is_valid = True
+        elif piece == "knight":
+            if (abs(from_pos[0] - to_pos[0]) == 2 and abs(from_pos[1] - to_pos[1]) == 1) or \
+               (abs(from_pos[0] - to_pos[0]) == 1 and abs(from_pos[1] - to_pos[1]) == 2) or \
+               (abs(from_pos[0] - to_pos[0]) == 4 and abs(from_pos[1] - to_pos[1]) == 2) or \
+               (abs(from_pos[0] - to_pos[0]) == 2 and abs(from_pos[1] - to_pos[1]) == 4):
+                is_valid = True
+        elif piece == "bishop":
+            if abs(from_pos[0] - to_pos[0]) == abs(from_pos[1] - to_pos[1]):
+                is_valid = True
+        elif piece == "queen":
+            if (from_pos[0] == to_pos[0] or from_pos[1] == to_pos[1]) or \
+               (abs(from_pos[0] - to_pos[0]) == abs(from_pos[1] - to_pos[1])):
+                is_valid = True
+        elif piece == "king":
+            if abs(from_pos[0] - to_pos[0]) <= 1 and abs(from_pos[1] - to_pos[1]) <= 1:
+                is_valid = True
+        else:
+            # Outras peças: sempre válido (ajuste conforme sua lógica)
+            is_valid = True
+
+        if is_valid:
+            save_move(game_id, from_pos, to_pos, piece)
+            return jsonify({'status': 'ok'})
+        else:
+            return jsonify({'status': 'invalid'}), 400
+
+    return jsonify({'status': 'error', 'message': 'Método não permitido'}), 405
 
