@@ -21,9 +21,9 @@ def update_user_nickname(email, new_nickname):
     db.execute("UPDATE users SET username = ? WHERE email = ?", (new_nickname, email))
     db.commit()
 
-def create_game(player_email):
+def create_game(nickname1, nickname2, nickname3, nickname4):
     db = current_app.get_db()
-    return db.execute("INSERT INTO games (player_email) VALUES (?)", (player_email,)).lastrowid
+    return db.execute("INSERT INTO games (white_player1, white_player2, black_player1, black_player2) VALUES (?, ?, ?, ?)", (nickname1, nickname2, nickname3, nickname4)).lastrowid
 
 def save_move(game_id, from_pos, to_pos, piece):
     db = current_app.get_db()
