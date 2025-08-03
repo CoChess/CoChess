@@ -1,4 +1,5 @@
 from flask import current_app
+import json
 
 def get_user_by_email(email):
     db = current_app.get_db()
@@ -18,5 +19,17 @@ def update_user_password(email, new_password):
 def update_user_nickname(email, new_nickname):
     db = current_app.get_db()
     db.execute("UPDATE users SET username = ? WHERE email = ?", (new_nickname, email))
+    db.commit()
+
+def create_game(player_email):
+    db = current_app.get_db()
+    return db.execute("INSERT INTO games (player_email) VALUES (?)", (player_email,)).lastrowid
+
+def save_move(game_id, from_pos, to_pos, piece):
+    db = current_app.get_db()
+    db.execute(
+        "INSERT INTO moves (game_id, from_pos, to_pos, piece) VALUES (?, ?, ?, ?)",
+        (game_id, json.dumps(from_pos), json.dumps(to_pos), piece)
+    )
     db.commit()
 
