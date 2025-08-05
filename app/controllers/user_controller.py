@@ -67,6 +67,22 @@ def game():
     email = request.args.get('email')
     game_id = create_game("tt", "jh", "jc", "mv", "")
     return render_template('game.html', game_id=game_id)
+    
+def suggest_move():
+    if request.method == 'GET':
+        game_id = request.args.get('game_id')
+        return render_template('suggest_move.html', game_id=game_id)
+
+    move = request.form.get('move')
+    game_id = request.form.get('game_id')
+
+    if not move:
+        flash('Você precisa informar um movimento.', 'error')
+        return redirect(url_for('suggest_move', game_id=game_id))
+
+    save_move(game_id, None, None, move)
+    flash('Sugestão enviada com sucesso!', 'success')
+    return redirect(url_for('game_detail', game_id=game_id))
 
 def move():
     if request.method == 'POST':
