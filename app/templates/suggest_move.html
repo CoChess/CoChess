@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sugerir Jogada – {{ game_id }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Sugerir Jogada</h1>
+
+    {% if get_flashed_messages(with_categories=True) %}
+    <section role="alert" aria-live="polite" class="flash-messages">
+      <ul>
+        {% for category, message in get_flashed_messages(with_categories=True) %}
+        <li class="flash-{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('suggest_move') }}">
+      <input type="hidden" name="game_id" value="{{ game_id }}">
+
+      <label for="to_player_id">Para quem sugerir:</label>
+      <select id="to_player_id" name="to_player_id" required>
+        <option value="">Selecione...</option>
+        {% for partner in partners %}
+        <option value="{{ partner.id }}">{{ partner.nickname }}</option>
+        {% endfor %}
+      </select>
+
+      <label for="move">Movimento (ex: e2e4):</label>
+      <input
+        type="text"
+        id="move"
+        name="move"
+        required
+        pattern="[a-h][1-8][a-h][1-8]"
+        title="Use notação exata: letra (a-h) + número (1-8) + letra (a-h) + número (1-8)"
+        placeholder="e2e4"
+        maxlength="5"
+      >
+
+      <button type="submit">Enviar Sugestão</button>
+    </form>
+
+    <a href="{{ url_for('game', game_id=game_id) }}" aria-label="Voltar ao Jogo">
+      Voltar ao Jogo
+    </a>
+  </div>
+
+  <script>
+    const moveInput = document.getElementById('move');
+    moveInput.addEventListener('input', () => {
+      const regex = /^[a-h][1-8][a-h][1-8]$/;
+      moveInput.setCustomValidity(
+        regex.test(moveInput.value) ? '' : 'Use padrão exato: e2e4'
+      );
+    });
+  </script>
+</body>
+</html>
