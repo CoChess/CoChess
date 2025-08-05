@@ -11,3 +11,6 @@ def configure_routes(app):
     app.add_url_rule('/lobby/history', view_func=user_controller.history)
     app.add_url_rule('/lobby/game', view_func=user_controller.game, methods=['GET', 'POST'])
     app.add_url_rule('/game/move', view_func=user_controller.move, methods=['GET', 'POST'])
+    app.add_url_rule('/game/suggest_move',endpoint='suggest_move',view_func=user_controller.suggest_move,methods=['GET', 'POST'])
+
+
