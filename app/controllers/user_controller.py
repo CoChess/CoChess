@@ -1,6 +1,6 @@
 from flask import render_template, request, redirect, url_for, flash, current_app, jsonify
 from werkzeug.security import check_password_hash, generate_password_hash
-from app.models.user_model import get_user_by_email, update_user_password, update_user_nickname, create_game, save_move
+from app.models.user_model import get_user_by_email, update_user_password, update_user_nickname, create_game, save_move, get_partners_for_game
 from app.utils.validators import validate_input_match
 
 def change_password():
@@ -64,25 +64,27 @@ def history():
     return render_template('history.html')
 
 def game():
-    email = request.args.get('email')
     game_id = create_game("tt", "jh", "jc", "mv", "")
     return render_template('game.html', game_id=game_id)
     
 def suggest_move():
     if request.method == 'GET':
         game_id = request.args.get('game_id')
-        return render_template('suggest_move.html', game_id=game_id)
+        partners = get_partners_for_game(game_id)
+        return render_template('suggest_move.html', game_id=game_id, partners=partners)
 
     move = request.form.get('move')
     game_id = request.form.get('game_id')
+    to_player_id = request.form.get('to_player_id')
 
     if not move:
         flash('Você precisa informar um movimento.', 'error')
         return redirect(url_for('suggest_move', game_id=game_id))
 
-    save_move(game_id, None, None, move)
+    save_move(game_id, None, to_player_id, move)
     flash('Sugestão enviada com sucesso!', 'success')
-    return redirect(url_for('game_detail', game_id=game_id))
+    return redirect(url_for('game', game_id=game_id))
+
 
 def move():
     if request.method == 'POST':

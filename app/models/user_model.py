@@ -6,31 +6,57 @@ def get_user_by_email(email):
     db = current_app.get_db()
     return db.execute("SELECT * FROM users WHERE email = ?", (email,)).fetchone()
 
+def get_partners_for_game(game_id):
+    db = current_app.get_db()
+    row = db.execute(
+        'SELECT white_player1, white_player2, black_player1, black_player2 FROM games WHERE id = ?',
+        (game_id,)
+    ).fetchone()
+
+    if row is None:
+        return []
+
+    # Cria dicionários para cada jogador
+    partners = []
+    for nickname in row:
+        if nickname:
+            partners.append({'id': nickname, 'nickname': nickname})  # ID fictício = nickname
+
+    return partners
+
 def insert_user(user_data):
     db = current_app.get_db()
-    db.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)", 
+    cursor = db.execute("INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
                (user_data["username"], user_data["email"], user_data["password"]))
     db.commit()
+    return cursor.lastrowid
 
 def update_user_password(email, new_password):
     db = current_app.get_db()
-    db.execute("UPDATE users SET password = ? WHERE email = ?", (new_password, email))
+    cursor = db.execute("UPDATE users SET password = ? WHERE email = ?", (new_password, email))
     db.commit()
+    return cursor.lastrowid
 
 def update_user_nickname(email, new_nickname):
     db = current_app.get_db()
-    db.execute("UPDATE users SET username = ? WHERE email = ?", (new_nickname, email))
+    cursor = db.execute("UPDATE users SET username = ? WHERE email = ?", (new_nickname, email))
     db.commit()
+    return cursor.lastrowid
 
 def create_game(nickname1, nickname2, nickname3, nickname4, result):
     db = current_app.get_db()
-    return db.execute("INSERT INTO games (white_player1, white_player2, black_player1, black_player2, result) VALUES (?, ?, ?, ?, ?)", (nickname1, nickname2, nickname3, nickname4, result)).lastrowid
+    cursor = db.execute(
+        "INSERT INTO games (white_player1, white_player2, black_player1, black_player2, result) VALUES (?, ?, ?, ?, ?)",
+        (nickname1, nickname2, nickname3, nickname4, result)
+    )
+    db.commit()
+    return cursor.lastrowid
 
 def save_move(game_id, from_pos, to_pos, piece):
     db = current_app.get_db()
-    db.execute(
+    cursor = db.execute(
         "INSERT INTO moves (game_id, from_pos, to_pos, piece) VALUES (?, ?, ?, ?)",
         (game_id, json.dumps(from_pos), json.dumps(to_pos), piece)
     )
     db.commit()
-
+    return cursor.lastrowid

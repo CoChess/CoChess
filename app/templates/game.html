@@ -1,21 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Jogo de Xadrez - {{ game_id }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <title>Jogo de Xadrez - {{ game_id }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body data-game-id="{{ game_id }}">
 
-<h1>Jogo em andamento</h1>
-<p>ID da partida: {{ game_id }}</p>
+  <h1>Jogo em andamento</h1>
+  <p>ID da partida: {{ game_id }}</p>
 
-<div id="chessboard"></div>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <section role="alert" aria-live="polite" class="flash-messages">
+        <ul>
+          {% for category, message in messages %}
+            <li class="flash-{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+  {% endwith %}
 
-<script>
-    const gameId = "{{ game_id }}";
-</script>
-<script src="{{ url_for('static', filename='script.js') }}"></script>
+  <div id="chessboard"></div>
 
+  <form method="get" action="{{ url_for('suggest_move') }}">
+    <input type="hidden" name="game_id" value="{{ game_id }}">
+    <button type="submit">Sugerir Jogada</button>
+  </form>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

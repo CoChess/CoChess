@@ -17,6 +17,18 @@ const initialBoard = [
 
 const board = document.getElementById('chessboard');
 
+// Obter o gameId a partir do atributo data do <body>
+const gameId = document.body.dataset.gameId;
+
+// Ocultar mensagens flash após 4 segundos
+setTimeout(() => {
+  const flash = document.querySelector('.flash-messages');
+  if (flash) {
+    flash.style.display = 'none';
+  }
+}, 4000);
+
+
 function createBoard() {
     for (let row = 0; row < 8; row++) {
         for (let col = 0; col < 8; col++) {

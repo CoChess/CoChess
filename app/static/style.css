@@ -76,6 +76,27 @@ body {
     height: 100vh;
     margin: 0;
 }
+.flash-messages ul {
+  list-style: none;
+  padding: 0;
+}
+
+.flash-success {
+  background-color: #e0f7e9;
+  color: #2e7d32;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.flash-error {
+  background-color: #fbeaea;
+  color: #c62828;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
 
 .container {
     display: flex;
