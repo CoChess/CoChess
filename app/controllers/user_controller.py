@@ -1,5 +1,5 @@
-from flask import render_template, request, redirect, url_for, flash, jsonify
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask import render_template, request, redirect, url_for, flash, jsonify, session
 from app.dao.user_dao import UserDAO
 from app.dao.game_dao import GameDAO
 from app.dao.move_dao import MoveDAO
@@ -8,9 +8,13 @@ from app.utils.validators import validate_input_match
 # =========================
 # Usuário
 # =========================
+
 def change_password():
+    if 'user_email' not in session:
+        flash("You must be logged in to change your password.", "error")
+        return redirect(url_for('login'))
+
     if request.method == 'POST':
-        email = request.form.get('email')
         current_password = request.form.get('password')
         new_password = request.form.get('new_password')
         confirm_new_password = request.form.get('confirm_new_password')
@@ -18,26 +22,31 @@ def change_password():
         if not validate_input_match(new_password, confirm_new_password, "Passwords don't match!"):
             return redirect(url_for('change_password'))
 
+        email = session['user_email']
         user = UserDAO.get_by_email(email)
+
         if not user:
-            flash("User don't found", "error")
+            flash("User not found.", "error")
             return redirect(url_for('change_password'))
 
-        if not check_password_hash(user['password'], current_password):
-            flash("Wrong password.", "error")
+        if not check_password_hash(user.password, current_password):
+            flash("Wrong current password.", "error")
             return redirect(url_for('change_password'))
 
         hashed_password = generate_password_hash(new_password)
         UserDAO.update_password(email, hashed_password)
-        flash("Password updated!", "success")
+        flash("Password updated successfully!", "success")
         return redirect(url_for('home'))
 
     return render_template('change_password.html')
 
 
 def change_nickname():
+    if 'user_email' not in session:
+        flash("You must be logged in to change your nickname.", "error")
+        return redirect(url_for('login'))
+
     if request.method == 'POST':
-        email = request.form.get('email')
         password = request.form.get('password')
         confirm_password = request.form.get('confirm_password')
         nickname = request.form.get('nickname')
@@ -45,17 +54,23 @@ def change_nickname():
         if not validate_input_match(password, confirm_password, "Passwords don't match!"):
             return redirect(url_for('change_nickname'))
 
+        email = session['user_email']
         user = UserDAO.get_by_email(email)
-        if not user or not check_password_hash(user['password'], password):
+
+        if not user:
+            flash("User not found.", "error")
+            return redirect(url_for('change_nickname'))
+
+        if not check_password_hash(user.password, password):
             flash("Wrong password.", "error")
             return redirect(url_for('change_nickname'))
 
         if not (5 <= len(nickname) <= 50):
-            flash("Nickname between 5 e 50 caracteres.", "error")
+            flash("Nickname must be between 5 and 50 characters.", "error")
             return redirect(url_for('change_nickname'))
 
         UserDAO.update_nickname(email, nickname)
-        flash("Nickname updated!", "success")
+        flash("Nickname updated successfully!", "success")
         return redirect(url_for('lobby'))
 
     return render_template('change_nickname.html')

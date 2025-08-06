@@ -3,6 +3,8 @@ from app.controllers import auth_controller, user_controller
 def configure_routes(app):
     app.add_url_rule('/', view_func=auth_controller.home)
     app.add_url_rule('/login', view_func=auth_controller.login, methods=['GET', 'POST'])
+    app.add_url_rule('/logout', 'logout', auth_controller.logout)
+    app.add_url_rule('/forget_password', view_func=auth_controller.forget_password, methods=['GET', 'POST'])
     app.add_url_rule('/create_account', view_func=auth_controller.create_account, methods=['GET', 'POST'])
     app.add_url_rule('/change_password', view_func=user_controller.change_password, methods=['GET', 'POST'])
     app.add_url_rule('/change_nickname', view_func=user_controller.change_nickname, methods=['GET', 'POST'])
