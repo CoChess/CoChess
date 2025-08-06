@@ -6,6 +6,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <section role="alert" aria-live="polite" class="flash-messages">
+        <ul>
+          {% for category, message in messages %}
+            <li class="flash-{{ category }}">{{ message }}</li>
+          {% endfor %}
+        </ul>
+      </section>
+    {% endif %}
+  {% endwith %}
     <div class="game-container">
         <div class="game-screen">
             <a class="play-button" href="{{ url_for('game') }}">PLAY</a>
@@ -28,5 +39,6 @@
         <a href="{{ url_for('change_nickname') }}">Edit Profile</a>
         <a href="{{ url_for('home') }}" class="exit">Sair</a>
     </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

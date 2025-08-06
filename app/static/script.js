@@ -72,7 +72,7 @@ function handleClick(square) {
                 piece: piece.toLowerCase()
             })
         }).then(res => {
-            if (!res.ok) alert("Movimento inválido!");
+            //if (!res.ok) alert("Invalid Move!");
         });
 
     } else if (square.textContent !== '') {
