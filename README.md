@@ -18,11 +18,9 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
-Link Replit:
+### Acesse no Replit
 
-```bash
-https://replit.com/@jarrowfive/CoChess
-```
+[CoChess no Replit](https://replit.com/@jarrowfive/CoChess)
 
 ## Colaboradores
 
