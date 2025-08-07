@@ -18,6 +18,12 @@ chmod +x setup.sh
 ./setup.sh
 ```
 
+Link Replit:
+
+```bash
+https://replit.com/@jarrowfive/CoChess
+```
+
 ## Colaboradores
 
 * Matheus Vidal Pereira - [https://github.com/Koriatv](https://github.com/Koriatv)
