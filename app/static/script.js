@@ -1,9 +1,25 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const board = document.getElementById('chessboard');
+    const gameId = document.body.dataset.gameId;
+
+    // Oculta mensagens flash se existirem
+    const flash = document.querySelector('.flash-messages');
+    if (flash) {
+        setTimeout(() => {
+            flash.style.display = 'none';
+        }, 4000);
+    }
+
+    if (board) {
+        createBoard(board, gameId);
+    }
+});
+
 const pieces = {
     'r': '♜', 'n': '♞', 'b': '♝', 'q': '♛', 'k': '♚', 'p': '♟',
     'R': '♖', 'N': '♘', 'B': '♗', 'Q': '♕', 'K': '♔', 'P': '♙'
 };
 
-// Tabuleiro inicial (FEN simplificado)
 const initialBoard = [
     'r','n','b','q','k','b','n','r',
     'p','p','p','p','p','p','p','p',
@@ -15,21 +31,9 @@ const initialBoard = [
     'R','N','B','Q','K','B','N','R'
 ];
 
-const board = document.getElementById('chessboard');
+let selectedSquare = null;
 
-// Obter o gameId a partir do atributo data do <body>
-const gameId = document.body.dataset.gameId;
-
-// Ocultar mensagens flash após 4 segundos
-setTimeout(() => {
-  const flash = document.querySelector('.flash-messages');
-  if (flash) {
-    flash.style.display = 'none';
-  }
-}, 4000);
-
-
-function createBoard() {
+function createBoard(board, gameId) {
     for (let row = 0; row < 8; row++) {
         for (let col = 0; col < 8; col++) {
             const square = document.createElement('div');
@@ -41,15 +45,13 @@ function createBoard() {
             const piece = initialBoard[row * 8 + col];
             if (piece) square.textContent = pieces[piece];
 
-            square.addEventListener('click', () => handleClick(square));
+            square.addEventListener('click', () => handleClick(square, board, gameId));
             board.appendChild(square);
         }
     }
 }
 
-let selectedSquare = null;
-
-function handleClick(square) {
+function handleClick(square, board, gameId) {
     if (selectedSquare) {
         selectedSquare.classList.remove('selected');
         const fromRow = parseInt(selectedSquare.dataset.row);
@@ -62,23 +64,21 @@ function handleClick(square) {
         selectedSquare.textContent = '';
         selectedSquare = null;
 
-        fetch("/move", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                game_id: gameId,
-                from: [fromRow, fromCol],
-                to: [toRow, toCol],
-                piece: piece.toLowerCase()
-            })
-        }).then(res => {
-            //if (!res.ok) alert("Invalid Move!");
-        });
+        if (gameId) {
+            fetch("/move", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    game_id: gameId,
+                    from: [fromRow, fromCol],
+                    to: [toRow, toCol],
+                    piece: piece.toLowerCase()
+                })
+            });
+        }
 
     } else if (square.textContent !== '') {
         selectedSquare = square;
         square.classList.add('selected');
     }
 }
-
-createBoard();
